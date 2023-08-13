@@ -57,13 +57,15 @@ state.active_piece = {
     },
     type = 1,
     rotation = 1,
+    last_held = 0,
+    restrict_left = false,
+    restrict_right = false,
 }
 
-state.piece_bag = {1, 2, 3, 4, 5, 6, 7}
+state.piece_bag = {2, 1, 3, 4, 5, 6, 7}
 
 -- Stores global timer
-state.timeSinceTick = 0
-state.tick = 0
+state.global_seconds = 0
 
 -- Debug enabled flag
 state.debug = true

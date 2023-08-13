@@ -12,7 +12,7 @@ function love.load()
     love.window.updateMode(800, 800)
     love.graphics.setDefaultFilter('nearest', 'nearest') -- Enable pixel-perfect graphics
 
-    last_pairs = {}
+    gameboard.load()
 
     world = love.physics.newWorld() -- Generate box2D physics world
 end
