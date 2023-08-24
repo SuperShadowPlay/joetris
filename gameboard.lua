@@ -5,27 +5,58 @@ movingPiece = require('movingPiece')
     Anything to do with the actual game board.
 ]]
 
-local bottom_of_piece_pos = function(central_piece_pos_y, block_size)
-    return central_piece_pos_y + (block_size / 2)
-end
-
 gameboard = {
     block_size   = 35,
     board_width  = 10,
     board_height = 20,
+
+    -- Filled upon calling gameboard.load()
+    anchor_x = nil,
+    anchor_y = nil,
+    block_heights = nil,
 }
 
-gameboard.load = function()
-    movingPiece.create_next(gameboard.board_width, 1)
+
+-- Private functions
+local bottom_of_piece_pos = function(central_piece_pos_y, block_size)
+    return central_piece_pos_y + (block_size / 2)
 end
 
-gameboard.draw = function(anchor_x, anchor_y)
+local bottom_of_board_pos = function()
+    return {
+        x = gameboard.anchor_x,
+        y = gameboard.anchor_y * gameboard.block_size * board_height
+    }
+end
+
+local gen_possible_block_top_heights = function()
+    -- Generates a table of y coordinates that correspond to each level of the gameboard's actual position on screen.
+    -- These values are used for collison detection.
+    local possible = {}
+    for height_level, _ in pairs(state.board) do
+        table.insert(possible, gameboard.anchor_y + gameboard.block_size * height_level)
+    end
+    return possible
+end
+
+-- Public functions
+
+gameboard.load = function(anchor_x, anchor_y)
+    -- Call upon loading a new gameboard
+    gameboard.anchor_x = anchor_x
+    gameboard.anchor_y = anchor_y
+    gameboard.block_heights = gen_possible_block_top_heights()
+    print(gameboard.block_heights[1])
+    movingPiece.create_next(gameboard.board_width, gameboard.board_height)
+end
+
+gameboard.draw = function()
     -- Draw gameboard. The two anchor arguments specify the location of the topleft corner of the board.
 
 
     -- Center coordinates on anchor
     love.graphics.push()
-    love.graphics.translate(anchor_x, anchor_y)
+    love.graphics.translate(gameboard.anchor_x, gameboard.anchor_y)
 
     -- Background
     love.graphics.setColor(0.75, 0.75, 0.75, 1)
@@ -55,7 +86,7 @@ end
 gameboard.update = function(dt)
     state.global_seconds = state.global_seconds + dt
     local fall_speed = 1 -- TODO: Change to be dynamic with game progrssion
-    movingPiece.update(dt, gameboard.block_size, fall_speed)
+    movingPiece.update(dt, gameboard.block_size, fall_speed, 20)
 end
 
 return gameboard

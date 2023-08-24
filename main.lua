@@ -12,7 +12,7 @@ function love.load()
     love.window.updateMode(800, 800)
     love.graphics.setDefaultFilter('nearest', 'nearest') -- Enable pixel-perfect graphics
 
-    gameboard.load()
+    gameboard.load(225, 50)
 
     world = love.physics.newWorld() -- Generate box2D physics world
 end
@@ -49,7 +49,7 @@ function love.draw()
     -- TODO: look into https://love2d.org/wiki/SUIT for GUI
     local Graphics = love.graphics
 
-    gameboard.draw(225, 50)
+    gameboard.draw()
 
     -- Draw debug info if requested
     if state.debug == true then
