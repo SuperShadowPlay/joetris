@@ -46,7 +46,6 @@ gameboard.load = function(anchor_x, anchor_y)
     gameboard.anchor_x = anchor_x
     gameboard.anchor_y = anchor_y
     gameboard.block_heights = gen_possible_block_top_heights()
-    print(gameboard.block_heights[1])
     movingPiece.create_next(gameboard.board_width, gameboard.board_height)
 end
 
